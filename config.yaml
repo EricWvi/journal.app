@@ -5,3 +5,8 @@ route:
   front:
     dir: "dist"
     index: "dist/index.html"
+db:
+  name: journal
+  host: postgres
+  port: 5432
+  username: onlyquant

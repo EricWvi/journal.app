@@ -8,7 +8,7 @@ func Init() {
 		panic(err)
 	}
 
-	// InitDB()
+	InitDB()
 }
 
 func LoadCfg() error {
