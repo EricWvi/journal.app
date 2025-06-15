@@ -1,0 +1,7 @@
+addr: :8765
+route:
+  back:
+    base: "/api"
+  front:
+    dir: "dist"
+    index: "dist/index.html"
