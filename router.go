@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/EricWvi/journal/handler/entry"
 	"github.com/EricWvi/journal/handler/ping"
 	"github.com/EricWvi/journal/middleware"
 	"github.com/gin-contrib/gzip"
@@ -15,6 +16,8 @@ import (
 
 // Load loads the middlewares, routes, handlers.
 func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
+	middleware.InitJWTMap()
+
 	// Middlewares.
 	g.Use(gin.Recovery())
 	g.Use(mw...)
@@ -53,7 +56,9 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 
 	back := g.Group(viper.GetString("route.back.base"))
 	back.Use(middleware.Logging)
+	back.Use(middleware.JWT)
 	back.POST("/ping", ping.DefaultHandler)
+	back.POST("/entry", entry.DefaultHandler)
 
 	return g
 }
