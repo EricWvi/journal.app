@@ -1,0 +1,12 @@
+addr: :8765
+route:
+  back:
+    base: "/api"
+  front:
+    dir: "dist"
+    index: "dist/index.html"
+db:
+  name: journal_test
+  host: postgres
+  port: 5432
+  username: onlyquant

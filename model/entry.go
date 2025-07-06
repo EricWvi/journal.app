@@ -3,13 +3,16 @@ package model
 import (
 	"fmt"
 
+	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
 
 type Entry struct {
 	gorm.Model
-	CreatorId uint
-	Content   string
+	CreatorId  uint           `gorm:"column:creator_id;not null"`
+	Content    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null"`
+	Visibility string         `gorm:"size:10;default:'PUBLIC';not null"`
+	Payload    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null"`
 }
 
 func (e *Entry) TableName() string {

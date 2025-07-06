@@ -1,6 +1,10 @@
 package config
 
-import "github.com/spf13/viper"
+import (
+	"os"
+
+	"github.com/spf13/viper"
+)
 
 func Init() {
 	// init config
@@ -12,7 +16,11 @@ func Init() {
 }
 
 func LoadCfg() error {
-	viper.SetConfigName("config")
+	name := "config.dev"
+	if os.Getenv("ENV") == "prod" {
+		name = "config.prod"
+	}
+	viper.SetConfigName(name)
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("config")
 	viper.AddConfigPath(".")
