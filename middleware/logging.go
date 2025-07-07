@@ -25,9 +25,6 @@ func (w bodyLogWriter) Write(b []byte) (int, error) {
 
 func Logging(c *gin.Context) {
 	start := time.Now().UTC()
-	path := c.Request.URL.Path
-	queries := c.Request.URL.RawQuery
-	headers := c.Request.Header
 	requestBody, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		log.Error("failed to read request body")
@@ -48,16 +45,11 @@ func Logging(c *gin.Context) {
 
 	c.Set("RequestBody", string(requestBody))
 
-	method := c.Request.Method
 	ip := c.ClientIP()
 
 	log.Infof("---------------------- %s ----------------------", requestId)
 	f := log.Fields{
 		"requestId": requestId,
-		"method":    method,
-		"path":      path,
-		"queries":   queries,
-		"headers":   headers,
 		"ip":        ip,
 	}
 	if c.ContentType() == "application/json" {

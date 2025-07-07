@@ -18,7 +18,6 @@ func InitJWTMap() {
 		os.Exit(1)
 	}
 	EmailToID = m
-	log.Info(EmailToID)
 }
 
 func JWT(c *gin.Context) {

@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"fmt"
 
 	"gorm.io/datatypes"
@@ -9,18 +10,36 @@ import (
 
 type Entry struct {
 	gorm.Model
-	CreatorId  uint           `gorm:"column:creator_id;not null"`
+	CreatorId uint `gorm:"column:creator_id;not null"`
+	EntryField
+}
+
+type EntryField struct {
 	Content    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null"`
 	Visibility string         `gorm:"size:10;default:'PUBLIC';not null"`
 	Payload    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null"`
 }
 
+const (
+	Entry_Table      = "entry"
+	Entry_Visibility = "visibility"
+	Entry_CreatorId  = "creator_id"
+	Entry_Id         = "id"
+)
+
+const (
+	Visibility_Public = "PUBLIC"
+	Visibility_Draft  = "DRAFT"
+)
+
+const PageSize = 6
+
 func (e *Entry) TableName() string {
-	return "entry"
+	return Entry_Table
 }
 
-func (e *Entry) Get(db *gorm.DB) error {
-	rst := db.Find(&e)
+func (e *Entry) Get(db *gorm.DB, where map[string]any) error {
+	rst := db.Where(where).Find(&e)
 	if rst.Error != nil {
 		return rst.Error
 	}
@@ -34,18 +53,39 @@ func (e *Entry) Create(db *gorm.DB) error {
 	return db.Create(e).Error
 }
 
-func (e *Entry) Update(db *gorm.DB) error {
-	return db.Updates(e).Error
+func (e *Entry) Update(db *gorm.DB, where map[string]any) error {
+	return db.Where(where).Updates(e).Error
 }
 
-func (e *Entry) Delete(db *gorm.DB) error {
-	return db.Delete(e).Error
+func (e *Entry) Delete(db *gorm.DB, where map[string]any) error {
+	return db.Where(where).Delete(e).Error
 }
 
-func FindEntries(db *gorm.DB, where map[string]any) ([]*Entry, error) {
-	entries := make([]*Entry, 0)
-	if err := db.Where(where).Find(&entries).Error; err != nil {
-		return nil, err
+func FindEntries(db *gorm.DB, where map[string]any, page uint) ([]*Entry, bool, error) {
+	if page < 1 {
+		return nil, false, errors.New("page number must be greater than 0")
 	}
-	return entries, nil
+	entries := make([]*Entry, 0, PageSize+1)
+	offset := (page - 1) * PageSize
+
+	// Retrieve one extra to check if there are more entries
+	if err := db.Where(where).
+		Where("visibility != ?", Visibility_Draft).
+		Order("created_at DESC").
+		Offset(int(offset)).
+		Limit(PageSize + 1).
+		Find(&entries).Error; err != nil {
+		return nil, false, err
+	}
+
+	hasMore := false
+	if len(entries) > PageSize {
+		hasMore = true
+		entries = entries[:PageSize]
+	}
+
+	if len(entries) == 0 {
+		return nil, false, errors.New("no entries found")
+	}
+	return entries, hasMore, nil
 }
