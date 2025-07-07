@@ -9,7 +9,7 @@ import (
 )
 
 func (b Base) GetEntries(c *gin.Context, req *GetEntriesRequest) *GetEntriesResponse {
-	entries, hasMore, err := model.FindEntries(config.DB, map[string]any{
+	entries, hasMore, err := model.FindEntries(config.DB, gin.H{
 		model.Entry_CreatorId: middleware.GetUserId(c),
 	}, req.Page)
 	if err != nil {

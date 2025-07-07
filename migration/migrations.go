@@ -13,6 +13,12 @@ func GetAllMigrations() []MigrationStep {
 			Up:      InitTables,
 			Down:    DropInitTables,
 		},
+		{
+			Version: "v0.2.0",
+			Name:    "Create media table",
+			Up:      CreateMediaTable,
+			Down:    DropMediaTable,
+		},
 	}
 }
 
@@ -43,5 +49,26 @@ func DropInitTables(db *gorm.DB) error {
 	return db.Exec(`
 		DROP TABLE IF EXISTS public.j_user CASCADE;
 		DROP TABLE IF EXISTS public.entry CASCADE;
+	`).Error
+}
+
+func CreateMediaTable(db *gorm.DB) error {
+	return db.Exec(`
+		CREATE TABLE public.j_media (
+			id SERIAL PRIMARY KEY,
+			creator_id integer NOT NULL,
+			link uuid DEFAULT gen_random_uuid(),
+			key VARCHAR(1024) NOT NULL UNIQUE,
+			last_presigned_time TIMESTAMP WITH TIME ZONE DEFAULT now(),
+			created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+			updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+			deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL
+		);
+	`).Error
+}
+
+func DropMediaTable(db *gorm.DB) error {
+	return db.Exec(`
+		DROP TABLE IF EXISTS public.j_media CASCADE;
 	`).Error
 }

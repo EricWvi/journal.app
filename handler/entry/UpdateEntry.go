@@ -12,7 +12,7 @@ func (b Base) UpdateEntry(c *gin.Context, req *UpdateEntryRequest) *UpdateEntryR
 	entry := &model.Entry{
 		EntryField: req.EntryField,
 	}
-	err := entry.Update(config.DB, map[string]any{
+	err := entry.Update(config.DB, gin.H{
 		model.Entry_CreatorId: middleware.GetUserId(c),
 		model.Entry_Id:        req.Id,
 	})

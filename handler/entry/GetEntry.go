@@ -10,7 +10,7 @@ import (
 
 func (b Base) GetEntry(c *gin.Context, req *GetEntryRequest) *GetEntryResponse {
 	e := &model.Entry{}
-	err := e.Get(config.DB, map[string]any{
+	err := e.Get(config.DB, gin.H{
 		model.Entry_CreatorId: middleware.GetUserId(c),
 		model.Entry_Id:        req.Id,
 	})

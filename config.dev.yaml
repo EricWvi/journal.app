@@ -1,4 +1,9 @@
 addr: :8765
+minio:
+  endpoint: minio.onlyquant.top
+  accessKeyID: 2EugvoLWSgyJDZ
+  bucket: journal
+  secure: true
 route:
   back:
     base: "/api"

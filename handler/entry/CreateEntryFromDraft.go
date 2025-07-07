@@ -10,7 +10,7 @@ import (
 
 func (b Base) CreateEntryFromDraft(c *gin.Context, req *CreateEntryFromDraftRequest) *CreateEntryFromDraftResponse {
 	entry := &model.Entry{}
-	err := entry.Get(config.DB, map[string]any{
+	err := entry.Get(config.DB, gin.H{
 		model.Entry_Visibility: model.Visibility_Draft,
 		model.Entry_CreatorId:  middleware.GetUserId(c),
 	})

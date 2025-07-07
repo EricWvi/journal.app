@@ -15,7 +15,7 @@ func (b Base) DeleteEntry(c *gin.Context, req *DeleteEntryRequest) *DeleteEntryR
 			ID: req.Id,
 		},
 	}
-	err := entry.Delete(config.DB, map[string]any{
+	err := entry.Delete(config.DB, gin.H{
 		model.Entry_CreatorId: middleware.GetUserId(c),
 	})
 	if err != nil {
