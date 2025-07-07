@@ -13,6 +13,7 @@ type Media struct {
 	CreatorId         uint      `gorm:"column:creator_id;not null"`
 	Link              uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();not null"`
 	Key               string    `gorm:"type:varchar(1024);not null;unique"`
+	PresignedURL      string    `gorm:"type:varchar(2048);default:null"`
 	LastPresignedTime time.Time `gorm:"column:last_presigned_time;type:timestamp with time zone;default:now()"`
 }
 

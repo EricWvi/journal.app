@@ -38,9 +38,15 @@ func Upload(c *gin.Context) {
 			c.JSON(500, gin.H{"message": "Failed to save " + file.Filename + ": " + err.Error()})
 			return
 		}
+		presignedUrl, err := client.PresignObject(c, fileKey)
+		if err != nil {
+			c.JSON(500, gin.H{"message": "Failed to presign url. " + err.Error()})
+			return
+		}
 		m := &model.Media{
-			CreatorId: middleware.GetUserId(c),
-			Key:       fileKey,
+			CreatorId:    middleware.GetUserId(c),
+			Key:          fileKey,
+			PresignedURL: presignedUrl,
 		}
 		err = m.Create(config.DB)
 		if err != nil {
@@ -62,5 +68,6 @@ func NewMinIOClient() (*service.MinIOUploader, error) {
 		SecretAccessKey: os.Getenv("JOURNAL_MINIO_KEY"),
 		Endpoint:        viper.GetString("minio.endpoint"),
 		UseSSL:          viper.GetBool("minio.secure"),
+		Expiry:          viper.GetDuration("minio.expiry"),
 	})
 }

@@ -19,6 +19,12 @@ func GetAllMigrations() []MigrationStep {
 			Up:      CreateMediaTable,
 			Down:    DropMediaTable,
 		},
+		{
+			Version: "v0.3.0",
+			Name:    "Add presigned url to media table",
+			Up:      CreatePresignedURL,
+			Down:    DropPresignedURL,
+		},
 	}
 }
 
@@ -70,5 +76,19 @@ func CreateMediaTable(db *gorm.DB) error {
 func DropMediaTable(db *gorm.DB) error {
 	return db.Exec(`
 		DROP TABLE IF EXISTS public.j_media CASCADE;
+	`).Error
+}
+
+func CreatePresignedURL(db *gorm.DB) error {
+	return db.Exec(`
+		ALTER TABLE public.j_media
+		ADD COLUMN presigned_url VARCHAR(2048) DEFAULT NULL;
+	`).Error
+}
+
+func DropPresignedURL(db *gorm.DB) error {
+	return db.Exec(`
+		ALTER TABLE public.j_media
+		DROP COLUMN IF EXISTS presigned_url;
 	`).Error
 }

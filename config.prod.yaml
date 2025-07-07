@@ -4,6 +4,7 @@ minio:
   accessKeyID: 2EugvoLWSgyJDZ
   bucket: journal
   secure: true
+  expiry: 120h
 route:
   back:
     base: "/api"

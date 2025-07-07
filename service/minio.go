@@ -22,12 +22,14 @@ type MinIOConfig struct {
 	AccessKeyID     string
 	SecretAccessKey string
 	UseSSL          bool
+	Expiry          time.Duration
 }
 
 // MinIOUploader wraps the MinIO client
 type MinIOUploader struct {
 	client *minio.Client
 	bucket string
+	expiry time.Duration
 }
 
 // NewMinIOUploader creates a new MinIO uploader instance
@@ -41,13 +43,11 @@ func NewMinIOUploader(config MinIOConfig) (*MinIOUploader, error) {
 		return nil, fmt.Errorf("failed to create MinIO client: %w", err)
 	}
 
-	return &MinIOUploader{client: minioClient, bucket: config.Bucket}, nil
+	return &MinIOUploader{client: minioClient, bucket: config.Bucket, expiry: config.Expiry}, nil
 }
 
 // UploadFromReader uploads a file to MinIO bucket from an io.Reader
 func (m *MinIOUploader) UploadFromReader(ctx context.Context, objectName string, reader io.Reader, size int64, contentType string) error {
-	println(m.client.IsOnline())
-
 	uploadInfo, err := m.client.PutObject(ctx, m.bucket, objectName, reader, size, minio.PutObjectOptions{
 		ContentType: contentType,
 	})
@@ -120,4 +120,13 @@ func (m *MinIOUploader) DeleteObject(ctx context.Context, objectName string) err
 
 	log.Infof("Object %s deleted successfully", objectName)
 	return nil
+}
+
+// PresignObject generates a presigned URL for an object in the MinIO bucket
+func (m *MinIOUploader) PresignObject(ctx context.Context, objectName string) (string, error) {
+	presignedURL, err := m.client.PresignedGetObject(ctx, m.bucket, objectName, m.expiry, nil)
+	if err != nil {
+		return "", fmt.Errorf("failed to generate presigned URL for object %s: %w", objectName, err)
+	}
+	return presignedURL.String(), nil
 }
