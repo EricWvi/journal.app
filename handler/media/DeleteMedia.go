@@ -5,6 +5,7 @@ import (
 	"github.com/EricWvi/journal/handler"
 	"github.com/EricWvi/journal/middleware"
 	"github.com/EricWvi/journal/model"
+	"github.com/EricWvi/journal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
@@ -12,7 +13,7 @@ import (
 
 func (b Base) DeleteMedia(c *gin.Context, req *DeleteMediaRequest) *DeleteMediaResponse {
 	deleted := []uuid.UUID{}
-	client, err := NewMinIOClient()
+	client, err := service.InitMinIOService()
 	if err != nil {
 		handler.Errorf(c, "%s", err.Error())
 		return nil

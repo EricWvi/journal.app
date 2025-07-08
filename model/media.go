@@ -18,9 +18,12 @@ type Media struct {
 }
 
 const (
-	Media_Table     = "j_media"
-	Media_CreatorId = "creator_id"
-	Media_Link      = "link"
+	Media_Table             = "j_media"
+	Media_Id                = "id"
+	Media_CreatorId         = "creator_id"
+	Media_Link              = "link"
+	Media_PresignedURL      = "presigned_url"
+	Media_LastPresignedTime = "last_presigned_time"
 )
 
 func (m *Media) TableName() string {

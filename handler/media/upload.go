@@ -1,14 +1,11 @@
 package media
 
 import (
-	"os"
-
 	"github.com/EricWvi/journal/config"
 	"github.com/EricWvi/journal/middleware"
 	"github.com/EricWvi/journal/model"
 	"github.com/EricWvi/journal/service"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 )
 
 // Upload handles the media upload request from form data.
@@ -25,7 +22,7 @@ func Upload(c *gin.Context) {
 		return
 	}
 
-	client, err := NewMinIOClient()
+	client, err := service.InitMinIOService()
 	if err != nil {
 		c.JSON(500, gin.H{"message": err.Error()})
 		return
@@ -58,16 +55,5 @@ func Upload(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"message": fileIds,
-	})
-}
-
-func NewMinIOClient() (*service.MinIOUploader, error) {
-	return service.NewMinIOUploader(service.MinIOConfig{
-		Bucket:          viper.GetString("minio.bucket"),
-		AccessKeyID:     viper.GetString("minio.accessKeyID"),
-		SecretAccessKey: os.Getenv("JOURNAL_MINIO_KEY"),
-		Endpoint:        viper.GetString("minio.endpoint"),
-		UseSSL:          viper.GetBool("minio.secure"),
-		Expiry:          viper.GetDuration("minio.expiry"),
 	})
 }

@@ -2,9 +2,13 @@ package main
 
 import (
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/EricWvi/journal/config"
 	"github.com/EricWvi/journal/migration"
+	"github.com/EricWvi/journal/service"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -18,6 +22,28 @@ func main() {
 	if err := runMigrations(); err != nil {
 		log.Fatalf("Failed to run migrations: %v", err)
 	}
+
+	// Initialize MinIO service
+	minioService, err := service.InitMinIOService()
+	if err != nil {
+		log.Fatalf("Failed to initialize MinIO service: %v", err)
+	}
+
+	// Initialize and start job scheduler
+	jobScheduler := service.NewJobScheduler(minioService, config.DB)
+	// Re-presign expired media files immediately on startup
+	jobScheduler.RePresignExpiredMedia()
+	jobScheduler.Start()
+
+	// Set up graceful shutdown
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-c
+		log.Info("Shutting down job scheduler...")
+		jobScheduler.Stop()
+		os.Exit(0)
+	}()
 
 	// gin
 	g := gin.New()
