@@ -1,8 +1,6 @@
 package config
 
 import (
-	"os"
-
 	"github.com/spf13/viper"
 )
 
@@ -16,11 +14,7 @@ func Init() {
 }
 
 func LoadCfg() error {
-	name := "config.dev"
-	if os.Getenv("ENV") == "prod" {
-		name = "config.prod"
-	}
-	viper.SetConfigName(name)
+	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("config")
 	viper.AddConfigPath(".")
