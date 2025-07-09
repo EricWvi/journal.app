@@ -88,8 +88,5 @@ func FindEntries(db *gorm.DB, where map[string]any, page uint) ([]*Entry, bool, 
 		entries = entries[:PageSize]
 	}
 
-	if len(entries) == 0 {
-		return nil, false, errors.New("no entries found")
-	}
 	return entries, hasMore, nil
 }
