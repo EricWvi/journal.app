@@ -23,6 +23,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 WORKDIR /app
 
 # Copy the binary and the config file from the builder
+COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/journal .
 COPY --from=builder /app/config.prod.yaml config.yaml
 
