@@ -6,14 +6,11 @@ import (
 	"github.com/EricWvi/journal/middleware"
 	"github.com/EricWvi/journal/model"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 func (b Base) DeleteEntry(c *gin.Context, req *DeleteEntryRequest) *DeleteEntryResponse {
 	entry := &model.Entry{
-		Model: gorm.Model{
-			ID: req.Id,
-		},
+		ID: req.Id,
 	}
 	err := entry.Delete(config.DB, gin.H{
 		model.Entry_CreatorId: middleware.GetUserId(c),

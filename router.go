@@ -58,7 +58,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	g.Use(middleware.JWT)
 
 	raw := g.Group(viper.GetString("route.back.base"))
-	raw.POST(viper.GetString("route.back.base")+"/upload", media.Upload)
+	raw.POST("/upload", media.Upload)
 	raw.GET("/m/:link", media.Serve)
 
 	back := g.Group(viper.GetString("route.back.base"))

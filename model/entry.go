@@ -3,21 +3,25 @@ package model
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
 
 type Entry struct {
-	gorm.Model
-	CreatorId uint `gorm:"column:creator_id;not null"`
+	ID        uint           `gorm:"primarykey" json:"id"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `gorm:"index"  json:"deletedAt"`
+	CreatorId uint           `gorm:"column:creator_id;not null" json:"creatorId"`
 	EntryField
 }
 
 type EntryField struct {
-	Content    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null"`
-	Visibility string         `gorm:"size:10;default:'PUBLIC';not null"`
-	Payload    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null"`
+	Content    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null" json:"content"`
+	Visibility string         `gorm:"size:10;default:'PUBLIC';not null" json:"visibility"`
+	Payload    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null" json:"payload"`
 }
 
 const (

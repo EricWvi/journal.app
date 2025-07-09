@@ -6,6 +6,7 @@ import (
 	"github.com/EricWvi/journal/middleware"
 	"github.com/EricWvi/journal/model"
 	"github.com/gin-gonic/gin"
+	"gorm.io/datatypes"
 )
 
 func (b Base) GetDraft(c *gin.Context, req *GetDraftRequest) *GetDraftResponse {
@@ -18,6 +19,7 @@ func (b Base) GetDraft(c *gin.Context, req *GetDraftRequest) *GetDraftResponse {
 	if err != nil {
 		e.CreatorId = userId
 		e.Visibility = model.Visibility_Draft
+		e.Content = datatypes.JSON([]byte("[]"))
 		err = e.Create(config.DB)
 		if err != nil {
 			handler.Errorf(c, "%s", err.Error())
