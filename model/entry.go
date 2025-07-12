@@ -65,6 +65,18 @@ func (e *Entry) Delete(db *gorm.DB, where map[string]any) error {
 	return db.Where(where).Delete(e).Error
 }
 
+func FindDates(db *gorm.DB, where map[string]any) ([]string, error) {
+	var dates []string
+	if err := db.Model(&Entry{}).
+		Select("DATE(created_at) as date").
+		Where(where).
+		Where("visibility != ?", Visibility_Draft).
+		Pluck("date", &dates).Error; err != nil {
+		return nil, err
+	}
+	return dates, nil
+}
+
 func FindEntries(db *gorm.DB, where map[string]any, page uint) ([]*Entry, bool, error) {
 	if page < 1 {
 		return nil, false, errors.New("page number must be greater than 0")
