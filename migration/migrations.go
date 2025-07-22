@@ -1,6 +1,7 @@
 package migration
 
 import (
+	"github.com/EricWvi/journal/model"
 	"gorm.io/gorm"
 )
 
@@ -25,9 +26,22 @@ func GetAllMigrations() []MigrationStep {
 			Up:      CreatePresignedURL,
 			Down:    DropPresignedURL,
 		},
+		{
+			Version: "v0.4.0",
+			Name:    "modify default value of content and payload in entry table",
+			Up:      AlterContentAndPayloadDefault,
+			Down:    DropContentAndPayloadDefault,
+		},
+		{
+			Version: "v0.5.0",
+			Name:    "Add word count to entry table",
+			Up:      CreateWordCountColumn,
+			Down:    DropWordCountColumn,
+		},
 	}
 }
 
+// ------------------- v0.1.0 -------------------
 func InitTables(db *gorm.DB) error {
 	return db.Exec(`
 		CREATE TABLE public.j_user (
@@ -58,6 +72,7 @@ func DropInitTables(db *gorm.DB) error {
 	`).Error
 }
 
+// ------------------- v0.2.0 -------------------
 func CreateMediaTable(db *gorm.DB) error {
 	return db.Exec(`
 		CREATE TABLE public.j_media (
@@ -79,6 +94,7 @@ func DropMediaTable(db *gorm.DB) error {
 	`).Error
 }
 
+// ------------------- v0.3.0 -------------------
 func CreatePresignedURL(db *gorm.DB) error {
 	return db.Exec(`
 		ALTER TABLE public.j_media
@@ -90,5 +106,63 @@ func DropPresignedURL(db *gorm.DB) error {
 	return db.Exec(`
 		ALTER TABLE public.j_media
 		DROP COLUMN IF EXISTS presigned_url;
+	`).Error
+}
+
+// ------------------- v0.4.0 -------------------
+func AlterContentAndPayloadDefault(db *gorm.DB) error {
+	return db.Exec(`
+		ALTER TABLE public.entry
+		ALTER COLUMN content SET DEFAULT '[]'::jsonb,
+		ALTER COLUMN payload SET DEFAULT '[]'::jsonb
+	`).Error
+}
+
+func DropContentAndPayloadDefault(db *gorm.DB) error {
+	return db.Exec(`
+		ALTER TABLE public.entry
+		ALTER COLUMN content SET DEFAULT '{}'::jsonb,
+		ALTER COLUMN payload SET DEFAULT '{}'::jsonb
+	`).Error
+}
+
+// ------------------- v0.5.0 -------------------
+func CreateWordCountColumn(db *gorm.DB) error {
+	if err := db.Exec(`
+		ALTER TABLE public.entry
+		ADD COLUMN word_count INTEGER DEFAULT 0 NOT NULL;
+	`).Error; err != nil {
+		return err
+	}
+	// fetch all rows with limit size as 100 and count words
+	offset := 0
+	limit := 100
+	e := &model.Entry{}
+	for {
+		var batch []model.Entry
+		if err := db.Offset(offset).Limit(limit).Find(&batch).Error; err != nil {
+			return err
+		}
+
+		if len(batch) == 0 {
+			break
+		}
+
+		for i := range batch {
+			e.WordCount = batch[i].CountWords()
+			if err := e.Update(db, map[string]any{"id": batch[i].ID}); err != nil {
+				return err
+			}
+		}
+
+		offset += limit
+	}
+	return nil
+}
+
+func DropWordCountColumn(db *gorm.DB) error {
+	return db.Exec(`
+		ALTER TABLE public.entry
+		DROP COLUMN IF EXISTS word_count;
 	`).Error
 }

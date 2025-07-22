@@ -23,6 +23,7 @@ func (b Base) CreateEntryFromDraft(c *gin.Context, req *CreateEntryFromDraftRequ
 	entry.EntryField = req.EntryField
 	entry.CreatedAt = time.Now()
 	entry.UpdatedAt = time.Now()
+	entry.WordCount = entry.CountWords()
 	err = entry.Update(config.DB, nil)
 	if err != nil {
 		handler.Errorf(c, "%s", err.Error())

@@ -1,6 +1,7 @@
 package model
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"time"
@@ -22,6 +23,7 @@ type EntryField struct {
 	Content    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null" json:"content"`
 	Visibility string         `gorm:"size:10;default:'PUBLIC';not null" json:"visibility"`
 	Payload    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null" json:"payload"`
+	WordCount  int            `gorm:"column:word_count;not null" json:"wordCount"`
 }
 
 const (
@@ -63,6 +65,38 @@ func (e *Entry) Update(db *gorm.DB, where map[string]any) error {
 
 func (e *Entry) Delete(db *gorm.DB, where map[string]any) error {
 	return db.Where(where).Delete(e).Error
+}
+
+func (e *Entry) CountWords() int {
+	if e.Content == nil {
+		e.Content = datatypes.JSON("[]")
+	}
+	count := 0
+	// the json is formated as [{"type": "text", "content": "some text content"}]
+	var contentMap []map[string]any
+	if err := json.Unmarshal(e.Content, &contentMap); err != nil {
+		return 0
+	}
+	for _, item := range contentMap {
+		if item["type"] == "text" {
+			if textContent, ok := item["content"].(string); ok {
+				wordCount := max(len([]rune(textContent)), 0)
+				count += wordCount
+			}
+		}
+	}
+	return count
+}
+
+func CountAllWords(db *gorm.DB, where map[string]any) int {
+	var count int64
+	if err := db.Model(&Entry{}).
+		Select("SUM(word_count)").
+		Where(where).
+		Where("visibility != ?", Visibility_Draft).Scan(&count).Error; err != nil {
+		return 0
+	}
+	return int(count)
 }
 
 func FindDates(db *gorm.DB, where map[string]any) ([]string, error) {

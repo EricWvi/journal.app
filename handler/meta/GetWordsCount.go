@@ -1,21 +1,19 @@
 package meta
 
 import (
+	"github.com/EricWvi/journal/config"
+	"github.com/EricWvi/journal/middleware"
+	"github.com/EricWvi/journal/model"
 	"github.com/gin-gonic/gin"
 )
 
 func (b Base) GetWordsCount(c *gin.Context, req *GetWordsCountRequest) *GetWordsCountResponse {
-	// count, err := model.CountWords(config.DB, gin.H{
-	// 	model.Entry_CreatorId: middleware.GetUserId(c),
-	// 	"year":                req.Year,
-	// })
-	// if err != nil {
-	// 	handler.Errorf(c, "%s", err.Error())
-	// 	return nil
-	// }
+	count := model.CountAllWords(config.DB, gin.H{
+		model.Entry_CreatorId: middleware.GetUserId(c),
+	})
 
 	return &GetWordsCountResponse{
-		Count: 2345,
+		Count: count,
 	}
 }
 
@@ -23,5 +21,5 @@ type GetWordsCountRequest struct {
 }
 
 type GetWordsCountResponse struct {
-	Count int64 `json:"count"`
+	Count int `json:"count"`
 }
