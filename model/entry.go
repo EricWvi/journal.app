@@ -68,13 +68,28 @@ func (e *Entry) Delete(db *gorm.DB, where map[string]any) error {
 func FindDates(db *gorm.DB, where map[string]any) ([]string, error) {
 	var dates []string
 	if err := db.Model(&Entry{}).
-		Select("DATE(created_at) as date").
+		Select("DISTINCT TO_CHAR(DATE(created_at), 'YYYY-MM-DD') AS day").
 		Where(where).
 		Where("visibility != ?", Visibility_Draft).
-		Pluck("date", &dates).Error; err != nil {
+		Pluck("day", &dates).Error; err != nil {
 		return nil, err
 	}
 	return dates, nil
+}
+
+func CountEntries(db *gorm.DB, where map[string]any) (int64, error) {
+	var count int64
+	query := db.Model(&Entry{}).Where("visibility != ?", Visibility_Draft)
+	if where["year"] != nil {
+		query = query.Where("EXTRACT(YEAR FROM created_at) = ?", where["year"])
+	}
+	if where[Entry_CreatorId] != nil {
+		query = query.Where(Entry_CreatorId+" = ?", where[Entry_CreatorId])
+	}
+	if err := query.Count(&count).Error; err != nil {
+		return 0, err
+	}
+	return count, nil
 }
 
 func FindEntries(db *gorm.DB, where map[string]any, page uint) ([]*Entry, bool, error) {

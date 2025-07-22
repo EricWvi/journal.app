@@ -1,4 +1,4 @@
-package entry
+package meta
 
 import (
 	"github.com/EricWvi/journal/config"

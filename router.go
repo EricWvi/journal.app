@@ -7,6 +7,7 @@ import (
 
 	"github.com/EricWvi/journal/handler/entry"
 	"github.com/EricWvi/journal/handler/media"
+	"github.com/EricWvi/journal/handler/meta"
 	"github.com/EricWvi/journal/handler/ping"
 	"github.com/EricWvi/journal/middleware"
 	"github.com/gin-contrib/gzip"
@@ -66,6 +67,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	back.POST("/ping", ping.DefaultHandler)
 	back.POST("/entry", entry.DefaultHandler)
 	back.POST("/media", media.DefaultHandler)
+	back.POST("/meta", meta.DefaultHandler)
 
 	return g
 }
