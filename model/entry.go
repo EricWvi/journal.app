@@ -20,7 +20,7 @@ type Entry struct {
 }
 
 type EntryField struct {
-	Content    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null" json:"content"`
+	Content    datatypes.JSON `gorm:"type:jsonb;default:'[]';not null" json:"content"`
 	Visibility string         `gorm:"size:10;default:'PUBLIC';not null" json:"visibility"`
 	Payload    datatypes.JSON `gorm:"type:jsonb;default:'{}';not null" json:"payload"`
 	WordCount  int            `gorm:"column:word_count;not null" json:"wordCount"`

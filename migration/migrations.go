@@ -38,6 +38,12 @@ func GetAllMigrations() []MigrationStep {
 			Up:      CreateWordCountColumn,
 			Down:    DropWordCountColumn,
 		},
+		{
+			Version: "v0.6.0",
+			Name:    "Modify default value of payload in entry table",
+			Up:      AlterPayloadDefault,
+			Down:    DropPayloadDefault,
+		},
 	}
 }
 
@@ -164,5 +170,20 @@ func DropWordCountColumn(db *gorm.DB) error {
 	return db.Exec(`
 		ALTER TABLE public.entry
 		DROP COLUMN IF EXISTS word_count;
+	`).Error
+}
+
+// ------------------- v0.6.0 -------------------
+func AlterPayloadDefault(db *gorm.DB) error {
+	return db.Exec(`
+		ALTER TABLE public.entry
+		ALTER COLUMN payload SET DEFAULT '{}'::jsonb
+	`).Error
+}
+
+func DropPayloadDefault(db *gorm.DB) error {
+	return db.Exec(`
+		ALTER TABLE public.entry
+		ALTER COLUMN payload SET DEFAULT '[]'::jsonb
 	`).Error
 }
