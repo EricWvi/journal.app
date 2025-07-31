@@ -25,20 +25,6 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	g.Use(mw...)
 	g.Use(gzip.Gzip(gzip.DefaultCompression))
 
-	// 404 Handler.
-	//g.NoRoute(func(c *gin.Context) {
-	//	handler.ReplyError(c, http.StatusNotFound, "The incorrect API route.")
-	//})
-
-	// serve spa index.html
-	//regexRouter := ginregex.New(g, nil)
-	//regexRouter.Any("^/.*$", func(c *gin.Context) {
-	//	c.File(viper.GetString("route.front.index"))
-	//})
-	g.NoRoute(func(c *gin.Context) {
-		c.File(viper.GetString("route.front.index"))
-	})
-
 	dir := viper.GetString("route.front.dir")
 	err := filepath.Walk(dir,
 		func(path string, info os.FileInfo, err error) error {
@@ -55,6 +41,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		log.Error(err)
 		os.Exit(1)
 	}
+
+	g.StaticFile("/", viper.GetString("route.front.index"))
 
 	g.Use(middleware.JWT)
 
