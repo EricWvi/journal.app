@@ -1,0 +1,443 @@
+.wechat-emoji {
+  background-image: url("/assets/wechat-emoji-sprite.png");
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 128px;
+  height: 128px;
+}
+
+.emoji-001 {
+  background-position: -5px -5px;
+}
+
+.emoji-002 {
+  background-position: -143px -5px;
+}
+
+.emoji-003 {
+  background-position: -281px -5px;
+}
+
+.emoji-004 {
+  background-position: -419px -5px;
+}
+
+.emoji-005 {
+  background-position: -557px -5px;
+}
+
+.emoji-006 {
+  background-position: -695px -5px;
+}
+
+.emoji-007 {
+  background-position: -833px -5px;
+}
+
+.emoji-008 {
+  background-position: -971px -5px;
+}
+
+.emoji-009 {
+  background-position: -1109px -5px;
+}
+
+.emoji-010 {
+  background-position: -1247px -5px;
+}
+
+.emoji-011 {
+  background-position: -5px -143px;
+}
+
+.emoji-012 {
+  background-position: -143px -143px;
+}
+
+.emoji-013 {
+  background-position: -281px -143px;
+}
+
+.emoji-014 {
+  background-position: -419px -143px;
+}
+
+.emoji-015 {
+  background-position: -557px -143px;
+}
+
+.emoji-016 {
+  background-position: -695px -143px;
+}
+
+.emoji-017 {
+  background-position: -833px -143px;
+}
+
+.emoji-018 {
+  background-position: -971px -143px;
+}
+
+.emoji-019 {
+  background-position: -1109px -143px;
+}
+
+.emoji-020 {
+  background-position: -1247px -143px;
+}
+
+.emoji-021 {
+  background-position: -5px -281px;
+}
+
+.emoji-022 {
+  background-position: -143px -281px;
+}
+
+.emoji-023 {
+  background-position: -281px -281px;
+}
+
+.emoji-024 {
+  background-position: -419px -281px;
+}
+
+.emoji-025 {
+  background-position: -557px -281px;
+}
+
+.emoji-026 {
+  background-position: -695px -281px;
+}
+
+.emoji-027 {
+  background-position: -833px -281px;
+}
+
+.emoji-028 {
+  background-position: -971px -281px;
+}
+
+.emoji-029 {
+  background-position: -1109px -281px;
+}
+
+.emoji-030 {
+  background-position: -1247px -281px;
+}
+
+.emoji-031 {
+  background-position: -5px -419px;
+}
+
+.emoji-032 {
+  background-position: -143px -419px;
+}
+
+.emoji-033 {
+  background-position: -281px -419px;
+}
+
+.emoji-034 {
+  background-position: -419px -419px;
+}
+
+.emoji-035 {
+  background-position: -557px -419px;
+}
+
+.emoji-036 {
+  background-position: -695px -419px;
+}
+
+.emoji-037 {
+  background-position: -833px -419px;
+}
+
+.emoji-038 {
+  background-position: -971px -419px;
+}
+
+.emoji-039 {
+  background-position: -1109px -419px;
+}
+
+.emoji-040_ {
+  background-position: -1247px -419px;
+}
+
+.emoji-041 {
+  background-position: -5px -557px;
+}
+
+.emoji-042 {
+  background-position: -143px -557px;
+}
+
+.emoji-043_ {
+  background-position: -281px -557px;
+}
+
+.emoji-044 {
+  background-position: -419px -557px;
+}
+
+.emoji-045 {
+  background-position: -557px -557px;
+}
+
+.emoji-046 {
+  background-position: -695px -557px;
+}
+
+.emoji-047 {
+  background-position: -833px -557px;
+}
+
+.emoji-048 {
+  background-position: -971px -557px;
+}
+
+.emoji-049 {
+  background-position: -1109px -557px;
+}
+
+.emoji-050 {
+  background-position: -1247px -557px;
+}
+
+.emoji-051 {
+  background-position: -5px -695px;
+}
+
+.emoji-052 {
+  background-position: -143px -695px;
+}
+
+.emoji-053 {
+  background-position: -281px -695px;
+}
+
+.emoji-054 {
+  background-position: -419px -695px;
+}
+
+.emoji-055 {
+  background-position: -557px -695px;
+}
+
+.emoji-056 {
+  background-position: -695px -695px;
+}
+
+.emoji-057 {
+  background-position: -833px -695px;
+}
+
+.emoji-058 {
+  background-position: -971px -695px;
+}
+
+.emoji-059 {
+  background-position: -1109px -695px;
+}
+
+.emoji-060 {
+  background-position: -1247px -695px;
+}
+
+.emoji-061 {
+  background-position: -5px -833px;
+}
+
+.emoji-062 {
+  background-position: -143px -833px;
+}
+
+.emoji-063 {
+  background-position: -281px -833px;
+}
+
+.emoji-064_Emm {
+  background-position: -419px -833px;
+}
+
+.emoji-065 {
+  background-position: -557px -833px;
+}
+
+.emoji-066 {
+  background-position: -695px -833px;
+}
+
+.emoji-067 {
+  background-position: -833px -833px;
+}
+
+.emoji-068 {
+  background-position: -971px -833px;
+}
+
+.emoji-069 {
+  background-position: -1109px -833px;
+}
+
+.emoji-070_ {
+  background-position: -1247px -833px;
+}
+
+.emoji-071_666 {
+  background-position: -5px -971px;
+}
+
+.emoji-072 {
+  background-position: -143px -971px;
+}
+
+.emoji-073 {
+  background-position: -281px -971px;
+}
+
+.emoji-074 {
+  background-position: -419px -971px;
+}
+
+.emoji-075 {
+  background-position: -557px -971px;
+}
+
+.emoji-076 {
+  background-position: -695px -971px;
+}
+
+.emoji-077 {
+  background-position: -833px -971px;
+}
+
+.emoji-078 {
+  background-position: -971px -971px;
+}
+
+.emoji-079 {
+  background-position: -1109px -971px;
+}
+
+.emoji-080 {
+  background-position: -1247px -971px;
+}
+
+.emoji-081 {
+  background-position: -5px -1109px;
+}
+
+.emoji-082 {
+  background-position: -143px -1109px;
+}
+
+.emoji-083 {
+  background-position: -281px -1109px;
+}
+
+.emoji-084 {
+  background-position: -419px -1109px;
+}
+
+.emoji-085 {
+  background-position: -557px -1109px;
+}
+
+.emoji-086 {
+  background-position: -695px -1109px;
+}
+
+.emoji-087_OK {
+  background-position: -833px -1109px;
+}
+
+.emoji-088 {
+  background-position: -971px -1109px;
+}
+
+.emoji-089 {
+  background-position: -1109px -1109px;
+}
+
+.emoji-090 {
+  background-position: -1247px -1109px;
+}
+
+.emoji-091 {
+  background-position: -5px -1247px;
+}
+
+.emoji-092 {
+  background-position: -143px -1247px;
+}
+
+.emoji-093 {
+  background-position: -281px -1247px;
+}
+
+.emoji-094 {
+  background-position: -419px -1247px;
+}
+
+.emoji-095 {
+  background-position: -557px -1247px;
+}
+
+.emoji-096 {
+  background-position: -695px -1247px;
+}
+
+.emoji-097 {
+  background-position: -833px -1247px;
+}
+
+.emoji-098 {
+  background-position: -971px -1247px;
+}
+
+.emoji-099 {
+  background-position: -1109px -1247px;
+}
+
+.emoji-100 {
+  background-position: -1247px -1247px;
+}
+
+.emoji-101 {
+  background-position: -1385px -5px;
+}
+
+.emoji-102 {
+  background-position: -1385px -143px;
+}
+
+.emoji-103 {
+  background-position: -1385px -281px;
+}
+
+.emoji-104 {
+  background-position: -1385px -419px;
+}
+
+.emoji-105 {
+  background-position: -1385px -557px;
+}
+
+.emoji-106 {
+  background-position: -1385px -695px;
+}
+
+.emoji-107 {
+  background-position: -1385px -833px;
+}
+
+.emoji-108 {
+  background-position: -1385px -971px;
+}
+
+.emoji-109 {
+  background-position: -1385px -1109px;
+}
